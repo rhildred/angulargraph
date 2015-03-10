@@ -1,0 +1,30 @@
+<!Doctype html>
+<html>
+
+<head>
+    <style>
+        .chart path {
+            fill-opacity: 1;
+            stroke:black;
+            stroke-width: 1;
+        }
+
+        .blueone {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="blueone">this is a piechart</h1>
+    <svg class="chart" width="400" height="400">
+        <!-- Pie chart sample -->
+        <path d="M200,200 L200,20 A180,180 0 0,1 377,231 z" style="fill:#ff0000" />
+        <path d="M200,200 L377,231 A180,180 0 0,1 138,369 z" style="fill:#00ff00" />
+        <path d="M200,200 L138,369 A180,180 0 0,1 20,194 z" style="fill:#0000ff" />
+        <path d="M200,200 L20,194 A180,180 0 0,1 75,71 z" style="fill:#ff00ff" />
+        <path d="M200,200 L75,71 A180,180 0 0,1 200,20 z" style="fill:#ffff00" />
+    </svg>
+</body>
+
+</html>

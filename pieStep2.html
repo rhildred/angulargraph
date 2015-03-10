@@ -1,0 +1,53 @@
+<!Doctype html>
+<html>
+
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+    <script>
+        angular.module("myApp", []).controller("myCtrl", function ($scope) {
+            angular.extend($scope, {
+                histogram: {
+                    thisWeek: 13,
+                    lastWeek: 42,
+                    "week 9": 12,
+                    "week 8": 11
+                },
+                nWidth: 400,
+                nHeight: 400,
+                nCenter: 0,
+                init: function () {
+                    $scope.nCenter = $scope.nHeight/2;
+                }
+            }).init();
+        });
+    </script>
+
+
+
+    <style>
+        .chart path {
+            fill-opacity: 1;
+            stroke: black;
+            stroke-width: 1;
+        }
+
+        .blueone {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+    <h1 class="blueone">this is a piechart</h1>
+    <svg class="chart" width="400" height="400">
+        <!-- Pie chart sample -->
+        <path d="M{{nCenter}},{{nCenter}} L200,20 A180,180 0 0,1 377,231 z" style="fill:#ff0000" />
+        <path d="M{{nCenter}},{{nCenter}} L377,231 A180,180 0 0,1 138,369 z" style="fill:#00ff00" />
+        <path d="M{{nCenter}},{{nCenter}} L138,369 A180,180 0 0,1 20,194 z" style="fill:#0000ff" />
+        <path d="M{{nCenter}},{{nCenter}} L20,194 A180,180 0 0,1 75,71 z" style="fill:#ff00ff" />
+        <path d="M{{nCenter}},{{nCenter}} L75,71 A180,180 0 0,1 200,20 z" style="fill:#ffff00" />
+    </svg>
+</body>
+
+</html>

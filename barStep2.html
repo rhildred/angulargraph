@@ -1,0 +1,58 @@
+<!Doctype html>
+<html>
+
+<head>
+    <style>
+        .chart rect {
+            fill: steelblue;
+        }
+
+        .chart text {
+            fill: white;
+            font: 10px sans-serif;
+            text-anchor: end;
+        }
+
+        .blueone {
+            color: blue;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+    <script>
+        angular.module("myApp", []).controller("myCtrl", function ($scope) {
+            angular.extend($scope, {
+                histogram:{
+                    thisWeek: 13,
+                    lastWeek: 42,
+                    "week 9": 12,
+                    "week 8": 11
+                },
+                nBarHeight: 20,
+                nWidth: 420,
+                nHeight: 0,
+                nScale: 1,
+                init: function(){
+                    var nMax = 0;
+                    var aKeys = Object.keys($scope.histogram);
+                    $scope.nHeight = aKeys.length * $scope.nBarHeight;
+                    for(var n = 0; n < aKeys.length; n++){
+                        if($scope.histogram[aKeys[n]] > nMax)nMax = $scope.histogram[aKeys[n]];
+                    }
+                    $scope.nScale = $scope.nWidth / nMax;
+                }
+            }).init();
+        });
+    </script>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+    <h1 class="blueone">this is a barchart</h1>
+    <svg class="chart" width="{{nWidth}}" height="{{nHeight}}">
+        <g ng-repeat='(key, value) in histogram track by $index' transform="translate(0,{{$index*20}})">
+            <rect width="{{value * nScale}}" height="{{nBarHeight - 1}}"></rect>
+            <text x="{{value * nScale}}" y="9.5" dy=".35em">{{key + ", " + value}} </text>
+        </g>
+    </svg>
+</body>
+
+</html>
