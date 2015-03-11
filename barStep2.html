@@ -21,22 +21,35 @@
     <script>
         angular.module("myApp", []).controller("myCtrl", function ($scope) {
             angular.extend($scope, {
-                histogram:{
-                    thisWeek: 13,
-                    lastWeek: 42,
-                    "week 9": 12,
-                    "week 8": 11
-                },
+                histogram: [
+                    {
+                        week: "thisWeek",
+                        players: 9,
+                        color: "#ff0000"
+                    },
+                    {
+                        week: "lastWeek",
+                        players: 62,
+                        color: "#00ff00"
+                    },
+                    {
+                        week: "week 9",
+                        players: 11,
+                        color: "#0000ff"
+                    },
+                    {
+                        week: "week 8",
+                        players: 14,
+                        color: "#ff00ff"
+                    }
+                ],
                 nBarHeight: 20,
                 nWidth: 420,
-                nHeight: 0,
                 nScale: 1,
                 init: function(){
                     var nMax = 0;
-                    var aKeys = Object.keys($scope.histogram);
-                    $scope.nHeight = aKeys.length * $scope.nBarHeight;
-                    for(var n = 0; n < aKeys.length; n++){
-                        if($scope.histogram[aKeys[n]] > nMax)nMax = $scope.histogram[aKeys[n]];
+                    for(var n = 0; n < $scope.histogram.length; n++){
+                        if($scope.histogram[n].players > nMax)nMax = $scope.histogram[n].players;
                     }
                     $scope.nScale = $scope.nWidth / nMax;
                 }
@@ -47,10 +60,10 @@
 
 <body ng-app="myApp" ng-controller="myCtrl">
     <h1 class="blueone">this is a barchart</h1>
-    <svg class="chart" width="{{nWidth}}" height="{{nHeight}}">
-        <g ng-repeat='(key, value) in histogram track by $index' transform="translate(0,{{$index*20}})">
-            <rect width="{{value * nScale}}" height="{{nBarHeight - 1}}"></rect>
-            <text x="{{value * nScale}}" y="9.5" dy=".35em">{{key + ", " + value}} </text>
+    <svg class="chart" width="{{nWidth}}" height="{{nBarHeight * histogram.length}}">
+        <g ng-repeat='week in histogram track by $index' transform="translate(0,{{$index*20}})">
+            <rect width="{{week.players * nScale}}" height="{{nBarHeight - 1}}"></rect>
+            <text x="{{week.players * nScale - 3}}" y="9.5" dy=".35em">{{week.week + ", " + week.players}} </text>
         </g>
     </svg>
 </body>

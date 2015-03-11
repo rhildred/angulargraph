@@ -15,7 +15,7 @@
                     },
                     {
                         week: "lastWeek",
-                        players: 62,
+                        players: 42,
                         color: "#00ff00"
                     },
                     {
@@ -31,28 +31,25 @@
                 ],
                 nWidth: 400,
                 nHeight: 400,
-                nCenter: 200,
-                nRadius:199,
+                nBinWidth: 0,
                 init: function () {
-                    var nCircumference = 0;
+                    var nMax = 0;
                     for (var n = 0; n < $scope.histogram.length; n++) {
-                        nCircumference += $scope.histogram[n].players;
+                        if(nMax < $scope.histogram[n].players)nMax = $scope.histogram[n].players;
                     }
-                    var nStarty = $scope.nCenter - $scope.nRadius, nStartx = $scope.nCenter;
-                    var nRadians = Math.PI/2;
+                    var nVscale = $scope.nHeight /nMax;
+                    $scope.nBinWidth = $scope.nWidth / ($scope.histogram.length + 1);
+                    var nStarty = nStartx = 0;
                     for (var n = 0; n < $scope.histogram.length; n++) {
                         oWeek = $scope.histogram[n];
                         oWeek.x = nStartx;
                         oWeek.y = nStarty;
-                        nRadians += (2*Math.PI * oWeek.players)/nCircumference;
-                        console.log("radians: " + nRadians);
-                        var nCos = Math.cos(nRadians);
-                        console.log("x: " + nCos);
-                        var nSin = Math.sin(nRadians);
-                        console.log("y: " + nSin);
-                        nStartx = oWeek.dx = $scope.nCenter - $scope.nRadius * nCos;
-                        nStarty = oWeek.dy = $scope.nCenter - $scope.nRadius * nSin;
-                        oWeek.bLong = oWeek.players > nCircumference/2?1:0;
+                        nStartx = oWeek.dx = nStartx + $scope.nBinWidth;
+                        nStarty = oWeek.dy = $scope.nHeight - oWeek.players * nVscale;
+                        if(n == 0){
+                            oWeek.x = nStartx;
+                            oWeek.y = nStarty;
+                        }
                     }
                 }
             }).init();
@@ -63,7 +60,7 @@
 
     <style>
         .chart path {
-            fill-opacity: 1;
+            fill-opacity: 0;
             stroke: black;
             stroke-width: 1;
         }
@@ -74,10 +71,10 @@
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl">
-    <h1 class="blueone">this is a piechart</h1>
+    <h1 class="blueone">this is a line graph</h1>
     <svg class="chart" width="400" height="400">
         <!-- Pie chart sample -->
-        <path ng-repeat='week in histogram' d="M{{nCenter}},{{nCenter}} L{{week.x}},{{week.y}} A{{nRadius}},{{nRadius}} 0 {{week.bLong}},1 {{week.dx}},{{week.dy}} z" style="fill:{{week.color}}" />
+        <path ng-repeat='week in histogram' d="M{{week.x}},{{week.y}} L{{week.dx}},{{week.dy}}" />
     </svg>
 </body>
 
